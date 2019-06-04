@@ -4,14 +4,15 @@ import org.testng.annotations.BeforeTest;
 
 public class DemoAPIAbstractTest {
 	
-	String Util ="Demo";
+	public static String APIurl = null;
+	String Util ="DEMO";
 	
 	@BeforeTest
 	public String getAPIurl()
 	{
 		if(Util.contains("DEMO"))
 		{
-			String APIurl = "https://5clr97erg9.execute-api.us-east-1.amazonaws.com/DemoAPI/pets";
+			APIurl = "https://5clr97erg9.execute-api.us-east-1.amazonaws.com/DemoAPI/pets";
 			return APIurl;
 		}
 		return null;
