@@ -1,5 +1,6 @@
 package com.oliulka.demoAPI.tests;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.annotations.Test;
 
@@ -18,7 +19,8 @@ public class Test01PetStore {
 	 public void TestGetPetStoreAPI()
 	 {
 		Flow01PetStore flow01 = new Flow01PetStore();
-		JSONObject resp = flow01.TestGetParticipantAPI();
+		JSONArray resp = flow01.TestGetParticipantAPI();
+		flow01.AssertParticipantAPI(resp);
 		System.out.println("Participant API data was asserted successfully");
 	 }
 }

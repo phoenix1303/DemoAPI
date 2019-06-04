@@ -5,43 +5,54 @@ import static org.testng.AssertJUnit.assertTrue;
 import static com.jayway.restassured.RestAssured.given;
 import static com.jayway.restassured.RestAssured.*;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.testng.Assert;
 
 import com.jayway.restassured.response.Response;
 
 public class Flow01PetStore //extends DemoAPIAbstractTest
 {
-	String 	APIurl = "https://5clr97erg9.execute-api.us-east-1.amazonaws.com/DemoAPI/pets";
+	String 	APIurl = "https://5clr97erg9.execute-api.us-east-1.amazonaws.com/DemoAPI";
 	public static String resp = null;
 	/********************************SETUP: Start: GET Participant API *************************************************/  	
-	public JSONObject TestGetParticipantAPI() throws JSONException
+	public JSONArray TestGetParticipantAPI() throws JSONException
 	{
-		//logger.info("------------------------------------------Starting GET Participant call---------------------------------------------------------------");
+		//logger.info("------------------------------------------Starting GET data call---------------------------------------------------------------");
 		Response response = given()
-				.get(APIurl +"participant/");
+				.get(APIurl +"/pets");
 			
 		assertEquals(response.getStatusCode(),200);
 		resp =  response.asString();
-		
-		JSONObject generalobject = new JSONObject(resp);
-		assertTrue("GET participant call reply does not look good", generalobject.getString("InternalId").length() > 10);
-		//logger.info("------------------------------------------GET Participant call was successful---------------------------------------------------------");
-		return generalobject;
+		if(!resp.startsWith("["))
+		{
+			resp = "[" + resp + "]";
+		}
+		JSONArray participantarray = new JSONArray(resp);
+		//logger.info("------------------------------------------GET data call was successful---------------------------------------------------------");
+		System.out.println("ToTal number of pets in the store - "+ participantarray.length());
+		return participantarray;
 	}
 			
 
 	/********************************Test 1: Start: GET Participant API**********************************************/
 		
-	public void AssertParticipantAPI(JSONObject generalobject, String xmllocation) 
+	public void AssertParticipantAPI(JSONArray participantarray) 
 	{	
-		//logger.info("------------------------------------------Start asserting JSON response for Participant API--------------------------------------------");
-		String currentAPI = APIurl +"participant/";
-		//JSONObject pptobject = generalobject.getJSONObject("ParticipantData").getJSONObject("ParticipantInfo").getJSONObject("Participant");
-
-		//assertEquals("", pptobject.getString("FirstName"), "FirstName API value of endpoint: "+currentAPI+" does not match the XML value,");
-	    //assertEquals("", pptobject.getString("LastName"),  "LastName API value of endpoint: "+currentAPI+" does not match the XML value,");  
-		//logger.info("------------------------------------------JSON response for Participant API was asserted successfully --------------------------------------------");
+		//logger.info("------------------------------------------Start default JSON response for data API--------------------------------------------");
+		
+		assertTrue("GET data strategy call reply looks good", participantarray.length() > 0);
+		for(int i=1;i<=participantarray.length();i++)
+		{
+			//Assert.assertNotNull(participantarray.getJSONObject(i).getJSONObject("id"));
+			Assert.assertNotNull(participantarray.getJSONObject(i).getJSONObject("type"));
+			Assert.assertNotNull(participantarray.getJSONObject(i).getJSONObject("price"));
+			System.out.println("Pet number"+i+" is "+participantarray.getJSONObject(i).getJSONObject("type")+
+					" and costs " + participantarray.getJSONObject(i).getJSONObject("price"));
+		}
+		
+		//logger.info("------------------------------------------JSON response for data API was asserted successfully --------------------------------------------");
 		}
 
 		/********************************Test 1: End: GET Participant API *********************************************/
