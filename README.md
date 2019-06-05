@@ -1,4 +1,4 @@
-# API
+# Example of API Automation testing project
 Example of API Automation code with REST Assured, Java, Maven and TestNG
 
 Following project is a basic example of API testing using REST Assured, Java, Maven and TestNG.
