@@ -2,24 +2,27 @@ package com.oliulka.demoAPI.flows;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.AssertJUnit.assertTrue;
-import static com.jayway.restassured.RestAssured.given;
-import static com.jayway.restassured.RestAssured.*;
 
+import org.apache.log4j.Logger;
+
+import static com.jayway.restassured.RestAssured.given;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.testng.Assert;
 
 import com.jayway.restassured.response.Response;
+import com.oliulka.demoAPI.DemoAPIAbstractTest;
 
 public class Flow01PetStore //extends DemoAPIAbstractTest
 {
+	final static Logger logger = Logger.getLogger(Flow01PetStore.class);
 	String 	APIurl = "https://5clr97erg9.execute-api.us-east-1.amazonaws.com/DemoAPI";
 	public static String resp = null;
-	/********************************SETUP: Start: GET Participant API *************************************************/  	
+	
+	/********************************SETUP: Start: GET pets data  API *************************************************/  	
 	public JSONArray TestGetParticipantAPI() throws JSONException
 	{
-		//logger.info("------------------------------------------Starting GET data call---------------------------------------------------------------");
+		logger.info("------------------------------------------Starting GET data call---------------------------------------------------------------");
 		Response response = given()
 				.get(APIurl +"/pets");
 			
@@ -29,32 +32,30 @@ public class Flow01PetStore //extends DemoAPIAbstractTest
 		{
 			resp = "[" + resp + "]";
 		}
-		JSONArray participantarray = new JSONArray(resp);
-		//logger.info("------------------------------------------GET data call was successful---------------------------------------------------------");
-		System.out.println("ToTal number of pets in the store - "+ participantarray.length());
-		return participantarray;
+		JSONArray generalantarray = new JSONArray(resp);
+		logger.info("------------------------------------------GET data call was successful---------------------------------------------------------");
+		System.out.println("Total number of pets in the store - "+ generalantarray.length());
+		return generalantarray;
 	}
 			
-
-	/********************************Test 1: Start: GET Participant API**********************************************/
-		
-	public void AssertParticipantAPI(JSONArray participantarray) 
+	/********************************Test 1: Start: Assert pets API**********************************************/
+	public void AssertParticipantAPI(JSONArray generalantarray) 
 	{	
-		//logger.info("------------------------------------------Start default JSON response for data API--------------------------------------------");
+		logger.info("------------------------------------------Start default JSON response for data API--------------------------------------------");
 		
-		assertTrue("GET data strategy call reply looks good", participantarray.length() > 0);
-		for(int i=1;i<=participantarray.length();i++)
+		assertTrue("GET data strategy call reply looks good", generalantarray.length() > 0);
+		for(int i=0;i<generalantarray.length();i++)
 		{
-			//Assert.assertNotNull(participantarray.getJSONObject(i).getJSONObject("id"));
-			Assert.assertNotNull(participantarray.getJSONObject(i).getJSONObject("type"));
-			Assert.assertNotNull(participantarray.getJSONObject(i).getJSONObject("price"));
-			System.out.println("Pet number"+i+" is "+participantarray.getJSONObject(i).getJSONObject("type")+
-					" and costs " + participantarray.getJSONObject(i).getJSONObject("price"));
+			Assert.assertNotNull(generalantarray.getJSONObject(i).get("id"));
+			Assert.assertNotNull(generalantarray.getJSONObject(i).get("type"));
+			Assert.assertNotNull(generalantarray.getJSONObject(i).get("price"));
+			System.out.println("Pet number "+(i+1)+" is "+generalantarray.getJSONObject(i).get("type")+
+					" and costs " + generalantarray.getJSONObject(i).get("price"));
 		}
 		
-		//logger.info("------------------------------------------JSON response for data API was asserted successfully --------------------------------------------");
-		}
+		logger.info("------------------------------------------JSON response for data API was asserted successfully --------------------------------------------");
+	}
 
-		/********************************Test 1: End: GET Participant API *********************************************/
+	/********************************Test 1: End: Assert pets API *********************************************/
 
 }
