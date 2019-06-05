@@ -12,11 +12,19 @@ public class Test01PetStore {
 	final static Logger logger = Logger.getLogger(Test01PetStore.class);
 	
 	@Test(enabled=true)
-	public void TestBasicPetStoreAPI() throws Exception  
+	public void TestDefaultPetStoreAPI() throws Exception  
 	{		
-		/* ----------------------- start: Asserting Participant Data in API ----------------------------------------------*/
+		/* ----------------------- start: Asserting default data of PetStore API ----------------------------------------------*/
 		TestGetPetStoreAPI();
-		/* ----------------------- end: Asserting Participant Data in API -------------------------------------------**---*/
+		/* ----------------------- end: Asserting default data of PetStore API -------------------------------------------**---*/
+	}
+	
+	@Test(enabled=true)
+	public void AddNewPetToPetStoreAPI() throws Exception  
+	{		
+		/* ----------------------- start: Adding and asserting new pet in PetStore in API ----------------------------------------------*/
+		AddNewPetToAPI();
+		/* ----------------------- end: Adding and asserting new pet in PetStore in API -------------------------------------------**---*/
 	}
 
 	 public void TestGetPetStoreAPI()
@@ -24,6 +32,14 @@ public class Test01PetStore {
 		Flow01PetStore flow01 = new Flow01PetStore();
 		JSONArray resp = flow01.TestGetParticipantAPI();
 		flow01.AssertParticipantAPI(resp);
-		logger.info("Participant API data was asserted successfully");
+		logger.info("Default PetStore API data was asserted successfully");
+	 }
+	 
+	 public void AddNewPetToAPI()
+	 {
+		Flow01PetStore flow01 = new Flow01PetStore();
+		JSONObject resp = flow01.AddNewAnimalToAPI();
+		flow01.assertAddedAnimal(resp);
+		logger.info("New pet data was asserted successfully");
 	 }
 }
