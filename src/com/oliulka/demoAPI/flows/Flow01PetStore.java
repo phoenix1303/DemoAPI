@@ -13,7 +13,7 @@ import org.testng.Assert;
 
 import com.jayway.restassured.response.Response;
 
-public class Flow01PetStore //extends DemoAPIAbstractTest
+public class Flow01PetStore
 {
 	final static Logger logger = Logger.getLogger(Flow01PetStore.class);
 	public static String resp = null;
